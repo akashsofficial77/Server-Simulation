@@ -10,13 +10,6 @@ import java.util.*;
  * @author tinyteddybear
  */
 public class Dispatcher {
-
-    Request req;
-    
-    Dispatcher(Request req) {
-        this.req = req;
-        
-    }
     
     class RunnableImp implements Runnable{
         Queue q;
