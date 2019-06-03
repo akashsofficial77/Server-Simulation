@@ -5,6 +5,8 @@
  */
 package elasticcomputing;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author tinyteddybear
@@ -12,11 +14,21 @@ import java.util.*;
 public class Dispatcher {
 
     Request req;
+    MainQueue queue;
+ 
     
-    Dispatcher(Request req) {
-        this.req = req;
-        
+
+    Dispatcher(Queue q) {
+        initialize(q);
     }
+
+    private void initialize( Queue q) {
+        System.out.println("dispatcher running");
+        Runnable r = new RunnableImp(q);
+        Thread t1 = new Thread(r);
+        t1.start();
+    }
+   
     
     class RunnableImp implements Runnable{
         Queue q;
@@ -27,11 +39,26 @@ public class Dispatcher {
         }
         
         public void run()
-        {
-            while(!q.isEmpty())
-            {
+        {  
+            System.out.println("Dispatcher in run");
+            System.out.println(q.size());
+            while(true){
+                synchronized(q){
+                if(!q.isEmpty())  {
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
+                q.notifyAll();
+            } else {
+                    try {
+                        q.wait();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Dispatcher.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
+            }
+                
+               
+          
                 
         }
     }
