@@ -62,14 +62,14 @@ public class RandomRequestGenerator {
     }
 
   
-    public static void main(String args[]){
-           RandomRequestGenerator r = new RandomRequestGenerator();
+   /* public static void main(String args[]){
+           
           
            
         //r.initialize();
        // r.generateRandomRequest();
        
-    }
+    }*/
   
     public  void generateRandomRequest(Queue q){
     int randInt2 = 0; 
