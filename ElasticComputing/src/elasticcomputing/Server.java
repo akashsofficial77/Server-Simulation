@@ -13,6 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class Server {
     String serverName;
     private Queue q;
+    
+    public Server(){
+        System.out.println("Server queue is created");
+        this.q = new LinkedList<Request>();
+    }
 
     public String getServerName() {
         return serverName;
@@ -26,10 +31,10 @@ public class Server {
         return q;
     }
 
-    public void setQ(Queue q) {
+  /*  public void setQ(Queue q) {
         this.q = q;
     }
-    
+    */
     
     public Server(Queue q)
     {
@@ -62,6 +67,7 @@ public class Server {
         {
             synchronized (q)
             {
+                System.out.println("server is poping request");
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
                 q.notifyAll();
                 }

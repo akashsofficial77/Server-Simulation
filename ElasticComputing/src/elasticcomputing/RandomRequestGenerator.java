@@ -44,10 +44,14 @@ public class RandomRequestGenerator {
         public void run()
         {    synchronized(q){
             //while(!q.isEmpty())
+            int rc=0;
             while (true){
             try{
                System.out.println(Thread.currentThread().getName());
+               
                generateRandomRequest(q);
+               System.out.println("Request "+rc);
+               rc++;
             }
             catch(Exception e){
             
@@ -74,28 +78,32 @@ public class RandomRequestGenerator {
     public  void generateRandomRequest(Queue q){
     int randInt2 = 0; 
     int randInt = 0;
+    
     while(q.size()==50){
       System.out.println("Queue is full");
                 try {
                     q.wait();
+                    System.out.println("Request generating thread is waiting");
                 } catch (InterruptedException ex) {
                     Logger.getLogger(RandomRequestGenerator.class.getName()).log(Level.SEVERE, null, ex);
                 }
     }
     try{
     randInt = rand.nextInt(5);
-    TimeUnit.SECONDS.sleep(randInt2);
+    TimeUnit.SECONDS.sleep((long) 0.5);
     } catch(Exception e){    
     }
     Request req1 = requestFactory.generateRequest();
     req1.setName("Request");
     req1.setProcessingTime(randInt);
     q.add(req1);
+    System.out.println(q.size()+" is the size of main queue ");
    // queue.setQueue(q);
-    
-    //Dispatcher  d = new Dispatcher((Request)queue.poll());
-    System.out.println("Request Generator Thread "+req1.getName()+ " T " + req1.getProcessingTime());
     q.notifyAll();
+    System.out.println("Request generating thread has notified all");
+    //Dispatcher  d = new Dispatcher((Request)queue.poll());
+    System.out.println("Request Generator Thread "+"   "+req1.getName()+ " T " + req1.getProcessingTime());
+    
     }
 
     private void initialize() {
@@ -105,6 +113,7 @@ public class RandomRequestGenerator {
        q = new LinkedList<Request>();
        Runnable r1 = new RunnableImp(q);
        mainThread = new Thread(r1); 
+       mainThread.setPriority(10);
        mainThread.start();
        Dispatcher d = new Dispatcher(q);
     }

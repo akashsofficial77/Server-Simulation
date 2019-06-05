@@ -22,15 +22,16 @@ public class Dispatcher {
     
     Dispatcher(Queue q) {
         this.q=q;
-        initialize(this.q);
+        initialize();
     }
 
-    private void initialize( Queue q) {
+    private void initialize() {
         serverFactory = new ServerFactory();
         Server server = serverFactory.generateServer();
+        server.setServerName("1ST-SERVER");
         serverArray = serverList.getServerList();
         serverArray.add(server);
-         System.out.println("serverArray*******************************");
+        System.out.println("serverArray*******************************");
         System.out.println(serverArray);
         Runnable r = new RunnableImp(q);
         Thread t1 = new Thread(r);
@@ -56,38 +57,57 @@ public class Dispatcher {
                 {
                     int i =0;
                     while(i<=serverArray.size())
-                    {
+                    {   
+                        System.out.println("While i is less than server array size");
                         Server s=(Server) serverArray.get(i);
                         System.out.println(Thread.currentThread().getName());
                         System.out.println(Thread.currentThread().getName());
-                        if(s.getQ().isEmpty() && i!=0)
+                        for (int j =0;j<serverArray.size();j++)
                         {
-                            serverArray.remove(s);
-                            i++;
-                            continue;
+                            Server se=(Server) serverArray.get(j);
+                            System.out.println("Server"+j+"has"+se.getQ().size());
                         }
-                        else if(s.getQ().size()<=9)
+                      /*  if(s.getQ().isEmpty() && i!=0)
+                        {   
+                            System.out.println("Removing empty server "  + s.getServerName());
+                            serverArray.remove(s);
+                            i--;
+                            continue;
+                        } */
+                         if(s.getQ().size()<=99)
                         {
-                            System.out.println(s.getQ().size());
-                            System.out.println(s.getServerName());
-                            System.out.println(Thread.currentThread().getName()+":"+s.getQ().add(q.poll()));
-                            s.initialize();
+                           
+                            System.out.println("Sending request to server " + s.getServerName() + " with size " +  s.getQ().size() );
+                            Request newRequest =(Request)q.poll();
+                            if (newRequest == null){
+                                break;
+                            }
+                            System.out.println("Removing the element from main queue and size is " + q.size());
                             q.notifyAll();
+                            System.out.println("Dispatcher thread has notified all");
+                            //int sleepTime = newRequest.getProcessingTime();
+                            //System.out.println(sleepTime);
+                            System.out.println(Thread.currentThread().getName()+":"+s.getQ().add(newRequest));
+                            
+                            s.initialize();
+                            
                             
                         }
                         else
                         {
-                            
+                            i++;
                             if (i == serverArray.size() )
                             {
                                 
                                 Server server = serverFactory.generateServer();
                                 server.setServerName("Server"+i);
+                                
+                                System.out.println("Server is full so creating new server with " + server.getServerName() + " as server name");
                                 serverArray = serverList.getServerList();
                                 serverArray.add(server);
                                 
                             }
-                            i++;
+                           
                         }
                         
                     }
@@ -98,6 +118,7 @@ public class Dispatcher {
                     try 
                     {
                         q.wait();
+                        System.out.println("Dispatcher thread is waiting");
                     } catch (InterruptedException ex) 
                     {
                         Logger.getLogger(Dispatcher.class.getName()).log(Level.SEVERE, null, ex);
