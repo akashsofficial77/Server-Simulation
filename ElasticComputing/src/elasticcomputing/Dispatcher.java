@@ -60,7 +60,7 @@ public class Dispatcher {
                 if(!q.isEmpty())  
                 {
                     int i =0;
-                    while(i<=serverArray.size())
+                    while(i<serverArray.size())
                     {   
                         System.out.println("While i is less than server array size");
                         Server s=(Server) serverArray.get(i);
@@ -110,7 +110,7 @@ public class Dispatcher {
                         else
                         {
                             i++;
-                            if (i == serverArray.size())
+                            if (i == serverArray.size() )
                             {
                                 
                                 Server server = serverFactory.generateServer();
@@ -131,7 +131,7 @@ public class Dispatcher {
                                     Server server=(Server) serverArray.get(x);
                                     if(server.getQ().isEmpty())
                                     {   
-                                        System.out.println("Removing empty server "  + server.getServerName());
+                                        System.out.println("Removing empty server *****************************************" +x+"    " + server.getServerName());
                                         server.setRemove(1);
                                         serverArray.remove(server);
                                         
