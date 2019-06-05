@@ -5,6 +5,7 @@
  */
 package elasticcomputing.userInterface;
 
+import elasticcomputing.RandomRequestGenerator;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 
@@ -15,12 +16,15 @@ import javax.swing.JPanel;
 public class ServerSimulationStart extends javax.swing.JPanel {
     
     private final JPanel righPanel;
+    private RandomRequestGenerator r;
     /**
      * Creates new form AboutUs
      */
-    ServerSimulationStart(JPanel rightPanel) {
+    ServerSimulationStart(JPanel rightPanel, RandomRequestGenerator r) {
         initComponents();
+        requestGenTextField.setText(Integer.toString(r.getRequestRate()));
         this.righPanel = rightPanel;
+        this.r = r;
     }
 
     /**
@@ -32,23 +36,13 @@ public class ServerSimulationStart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         backBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        requestGeneratedLabel = new javax.swing.JLabel();
+        requestGenTextField = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Here We will Display the result");
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setBorder(null);
-        jScrollPane1.setViewportView(jTextArea1);
 
         backBtn.setBackground(new java.awt.Color(153, 204, 255));
         backBtn.setFont(new java.awt.Font("Century Schoolbook", 1, 18)); // NOI18N
@@ -63,12 +57,24 @@ public class ServerSimulationStart extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Server Simulation Started!");
 
+        requestGeneratedLabel.setText("Request Generation Rate:");
+
+        requestGenTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                requestGenTextFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(101, 101, 101)
+                .addGap(49, 49, 49)
+                .addComponent(requestGeneratedLabel)
+                .addGap(67, 67, 67)
+                .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -76,11 +82,7 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                 .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(235, 235, 235)
                 .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 912, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addGap(0, 187, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,10 +92,12 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                     .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(57, 57, 57)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(requestGeneratedLabel)))
+                .addContainerGap(436, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -103,12 +107,16 @@ public class ServerSimulationStart extends javax.swing.JPanel {
        cardLayout.previous(righPanel);
     }//GEN-LAST:event_backBtnActionPerformed
 
+    private void requestGenTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestGenTextFieldActionPerformed
+           
+    }//GEN-LAST:event_requestGenTextFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField requestGenTextField;
+    private javax.swing.JLabel requestGeneratedLabel;
     // End of variables declaration//GEN-END:variables
 }

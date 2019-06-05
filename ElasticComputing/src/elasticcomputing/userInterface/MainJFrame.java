@@ -186,7 +186,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         RandomRequestGenerator r = new RandomRequestGenerator();
-        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel);
+        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r);
         rightPanel.add("ServerSimulationStart", serverSimulationStart);
         CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
         cardLayout.next(rightPanel);
