@@ -23,6 +23,7 @@ public class RandomRequestGenerator {
     Random rand;
    // MainQueue queue;
     Thread mainThread;
+     int requestRate=0;
     
   
     Dispatcher d;
@@ -44,14 +45,15 @@ public class RandomRequestGenerator {
         public void run()
         {    synchronized(q){
             //while(!q.isEmpty())
-            int rc=0;
+           
             while (true){
             try{
                System.out.println(Thread.currentThread().getName());
                
                generateRandomRequest(q);
-               System.out.println("Request "+rc);
-               rc++;
+               System.out.println("Request "+requestRate);
+               
+               requestRate++;
             }
             catch(Exception e){
             
@@ -63,6 +65,10 @@ public class RandomRequestGenerator {
                 
         }
     }
+    }
+    
+    public int getRequestRate(){
+        return requestRate;
     }
 
   
