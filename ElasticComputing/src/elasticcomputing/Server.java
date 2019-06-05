@@ -13,6 +13,15 @@ import java.util.concurrent.TimeUnit;
 public class Server {
     String serverName;
     private Queue q;
+    int remove=0;
+
+    public int getRemove() {
+        return remove;
+    }
+
+    public void setRemove(int remove) {
+        this.remove = remove;
+    }
     
     public Server(){
         System.out.println("Server queue is created");
@@ -51,10 +60,10 @@ public class Server {
 
         public void run()
         {
-            while(!q.isEmpty())
+            while(remove ==0)
             {
                 try{
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.SECONDS.sleep((int)1);
                 } catch(Exception e){
 
                 }
@@ -67,10 +76,14 @@ public class Server {
         {
             synchronized (q)
             {
+                while(!q.isEmpty())
+                {
                 System.out.println("server is poping request");
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
                 q.notifyAll();
                 }
+                
+            }
         }
         
         

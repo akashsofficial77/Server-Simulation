@@ -110,7 +110,7 @@ public class Dispatcher {
                         else
                         {
                             i++;
-                            if (i == serverArray.size() )
+                            if (i == serverArray.size())
                             {
                                 
                                 Server server = serverFactory.generateServer();
@@ -132,7 +132,9 @@ public class Dispatcher {
                                     if(server.getQ().isEmpty())
                                     {   
                                         System.out.println("Removing empty server "  + server.getServerName());
+                                        server.setRemove(1);
                                         serverArray.remove(server);
+                                        
                                     } 
                                 }
 
@@ -150,38 +152,12 @@ public class Dispatcher {
                 }
             
             }
-            }
+        }
                 
                
           
                 
         }
     }
-   /* class RunnableDel implements Runnable
-    {
-        
-        
-        @Override
-        public void run() 
-        {   
-            while (true) {
-                synchronized(serverArray){
-            for (Object s : serverArray )
-                    {   
-                        System.out.println("Completly deleting server");
-                        Server server=(Server) s;
-                        if(server.getQ().isEmpty())
-                        {   
-                            System.out.println("Removing empty server "  + server.getServerName());
-                            serverArray.remove(s);
-                        } 
-                    }
-                }
-            }
-            
-        }
-        
-    }*/
-
-
+   
 }
