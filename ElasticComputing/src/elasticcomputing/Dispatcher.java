@@ -5,6 +5,7 @@
  */
 package elasticcomputing;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -34,11 +35,11 @@ public class Dispatcher {
         System.out.println("serverArray*******************************");
         System.out.println(serverArray);
         Runnable r = new RunnableImp(q);
-        Runnable rDel= new RunnableDel();
+       // Runnable rDel= new RunnableDel();
         Thread t1 = new Thread(r);
-        Thread t2 =new Thread(rDel);
+       // Thread t2 =new Thread(rDel);
         t1.start();
-        t2.start();
+         
     }
    
     
@@ -83,6 +84,16 @@ public class Dispatcher {
                             System.out.println("Sending request to server " + s.getServerName() + " with size " +  s.getQ().size() );
                             Request newRequest =(Request)q.poll();
                             if (newRequest == null){
+                               /* for (Object o : serverArray )
+                                {   
+                                    System.out.println("Completly deleting server");
+                                    Server server=(Server) o;
+                                    if(server.getQ().isEmpty())
+                                    {   
+                                        System.out.println("Removing empty server "  + server.getServerName());
+                                        serverArray.remove(server);
+                                    } 
+                                }*/
                                 break;
                             }
                             System.out.println("Removing the element from main queue and size is " + q.size());
@@ -114,6 +125,16 @@ public class Dispatcher {
                         }
                         
                     }
+                     for (int x=0;x<serverArray.size();x++ )
+                                {   
+                                    System.out.println("Completly deleting server");
+                                    Server server=(Server) serverArray.get(x);
+                                    if(server.getQ().isEmpty())
+                                    {   
+                                        System.out.println("Removing empty server "  + server.getServerName());
+                                        serverArray.remove(server);
+                                    } 
+                                }
 
                 } 
                 else 
@@ -127,6 +148,7 @@ public class Dispatcher {
                         Logger.getLogger(Dispatcher.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            
             }
             }
                 
@@ -135,16 +157,18 @@ public class Dispatcher {
                 
         }
     }
-    class RunnableDel implements Runnable
+   /* class RunnableDel implements Runnable
     {
         
         
         @Override
         public void run() 
-        {
+        {   
+            while (true) {
+                synchronized(serverArray){
             for (Object s : serverArray )
                     {   
-                        System.out.println("While i is less than server array size");
+                        System.out.println("Completly deleting server");
                         Server server=(Server) s;
                         if(server.getQ().isEmpty())
                         {   
@@ -152,10 +176,12 @@ public class Dispatcher {
                             serverArray.remove(s);
                         } 
                     }
+                }
+            }
             
         }
         
-    }
+    }*/
 
 
 }
