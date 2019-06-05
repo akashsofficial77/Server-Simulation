@@ -34,8 +34,11 @@ public class Dispatcher {
         System.out.println("serverArray*******************************");
         System.out.println(serverArray);
         Runnable r = new RunnableImp(q);
+        Runnable rDel= new RunnableDel();
         Thread t1 = new Thread(r);
+        Thread t2 =new Thread(rDel);
         t1.start();
+        t2.start();
     }
    
     
@@ -132,4 +135,27 @@ public class Dispatcher {
                 
         }
     }
+    class RunnableDel implements Runnable
+    {
+        
+        
+        @Override
+        public void run() 
+        {
+            for (Object s : serverArray )
+                    {   
+                        System.out.println("While i is less than server array size");
+                        Server server=(Server) s;
+                        if(server.getQ().isEmpty())
+                        {   
+                            System.out.println("Removing empty server "  + server.getServerName());
+                            serverArray.remove(s);
+                        } 
+                    }
+            
+        }
+        
+    }
+
+
 }
