@@ -11,12 +11,12 @@ import java.util.*;
  */
 public class ServerFactory 
 {
-    private Queue q;
+    
     
     public Server generateServer()
     {
         
-        return new Server(q);
+        return new Server();
         
     }
     

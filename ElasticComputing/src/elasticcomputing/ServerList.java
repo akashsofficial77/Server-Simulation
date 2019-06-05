@@ -15,6 +15,7 @@ import java.util.Queue;
  */
 public class ServerList {
     ArrayList<Server> serverList;
+    
     ServerList()
     {
         serverList = new ArrayList<Server>();
