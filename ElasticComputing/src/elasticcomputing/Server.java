@@ -17,7 +17,15 @@ public class Server {
     private Queue q;
     int remove=0;
     int processingTime;
-   
+    double rate ;
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
     
     
 
@@ -110,26 +118,41 @@ public class Server {
             while(remove ==0)
             {
                 try{
-                   TimeUnit.SECONDS.sleep((int)processingTime);
+                   TimeUnit.MILLISECONDS.sleep((int)processingTime);
                } catch(Exception e){
                    
                }
-                completed();
+
+                try {
+                    completed();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }
         
-        public void completed()
+        public void completed() throws InterruptedException
         {
-            synchronized (q)
-            {
+            
                 while(!q.isEmpty())
                 {
-                
-                System.out.println("server is poping request");
+                    try{
+                   TimeUnit.MILLISECONDS.sleep((int)processingTime-500);
+               } catch(Exception e){
+                   
+               }
+               synchronized (q)
+            {
+            
+                System.out.println("server is popping request");
                    
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
                 processe++;
+                
+                setlEndTime(System.nanoTime());
+                rate = ((getlEndTime()-getlStartTime())/1000000)/processe;
+                                     
                 q.notifyAll();
                 }
                 
