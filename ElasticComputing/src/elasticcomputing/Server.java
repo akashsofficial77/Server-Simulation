@@ -17,6 +17,9 @@ public class Server {
     private Queue q;
     int remove=0;
     int processingTime;
+   
+    
+    
 
     public int getProcessingTime() {
         return processingTime;
@@ -68,7 +71,7 @@ public class Server {
         System.out.println("Server queue is created");
         this.q = new LinkedList<Request>();
         
-        setServerName("Server"+i);
+        setServerName("Server" + i);
         i++;
     }
 
@@ -106,7 +109,7 @@ public class Server {
         {
             while(remove ==0)
             {
-               try{
+                try{
                    TimeUnit.SECONDS.sleep((int)processingTime);
                } catch(Exception e){
                    
@@ -122,6 +125,7 @@ public class Server {
             {
                 while(!q.isEmpty())
                 {
+                
                 System.out.println("server is poping request");
                    
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
@@ -129,10 +133,11 @@ public class Server {
                 q.notifyAll();
                 }
                 
-            }
+            
+        
         }
         
-        
+        }
     }
     public void initialize()
         {

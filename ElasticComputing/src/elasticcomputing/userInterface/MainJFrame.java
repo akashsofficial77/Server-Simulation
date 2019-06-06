@@ -7,6 +7,7 @@ package elasticcomputing.userInterface;
 
 
 import elasticcomputing.RandomRequestGenerator;
+import elasticcomputing.ServerList;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -261,13 +262,14 @@ public class MainJFrame extends javax.swing.JFrame {
         int reqRate = Integer.valueOf(requestRateTextField.getText());
         int processTime = Integer.valueOf(processTimeTextField.getText());
         int reqPerServer = Integer.valueOf(reqPerServerTextField.getText());
-        RandomRequestGenerator r = new RandomRequestGenerator(reqRate,processTime,reqPerServer);
+        ServerList serverList = new ServerList();
+        RandomRequestGenerator r = new RandomRequestGenerator(reqRate,processTime,reqPerServer, serverList);
         //need to enter validations
       //  r.setRequestRate(Integer.valueOf(requestRateTextField.getText()));
       //  r.setProcessingTime(Integer.valueOf(processTimeTextField.getText()));
       //  r.setReqPerServer(Integer.valueOf(reqPerServerTextField.getText()));
         
-        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r);
+        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r, serverList);
         rightPanel.add("ServerSimulationStart", serverSimulationStart);
         CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
         cardLayout.next(rightPanel);

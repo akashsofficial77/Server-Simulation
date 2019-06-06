@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ServerList {
     ArrayList<Server> serverList;
     
-    ServerList()
+    public ServerList()
     {
         serverList = new ArrayList<Server>();
     }
