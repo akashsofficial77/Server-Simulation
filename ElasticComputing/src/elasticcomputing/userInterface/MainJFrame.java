@@ -48,6 +48,12 @@ public class MainJFrame extends javax.swing.JFrame {
         leftPanel = new javax.swing.JPanel();
         stopButton = new javax.swing.JButton();
         startButton = new javax.swing.JButton();
+        requestRateTextField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        processTimeTextField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        reqPerServerTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,25 +125,76 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        requestRateTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                requestRateTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Request Rate:");
+
+        processTimeTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                processTimeTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Processing Time:");
+
+        reqPerServerTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reqPerServerTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Requests per Server:");
+
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftPanelLayout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                    .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+            .addGroup(leftPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(requestRateTextField))
+                    .addGroup(leftPanelLayout.createSequentialGroup()
+                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(reqPerServerTextField)
+                            .addComponent(processTimeTextField)))))
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(231, 231, 231)
+                .addContainerGap()
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(requestRateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(processTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reqPerServerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(138, 138, 138)
                 .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(230, Short.MAX_VALUE))
         );
 
         jSplitPane1.setLeftComponent(leftPanel);
@@ -184,13 +241,37 @@ public class MainJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jLabel1AncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel1AncestorRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel1AncestorRemoved
+
+    private void reqPerServerTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqPerServerTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reqPerServerTextFieldActionPerformed
+
+    private void processTimeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processTimeTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_processTimeTextFieldActionPerformed
+
+    private void requestRateTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestRateTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_requestRateTextFieldActionPerformed
+
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
-        RandomRequestGenerator r = new RandomRequestGenerator();
+        int reqRate = Integer.valueOf(requestRateTextField.getText());
+        int processTime = Integer.valueOf(processTimeTextField.getText());
+        int reqPerServer = Integer.valueOf(reqPerServerTextField.getText());
+        RandomRequestGenerator r = new RandomRequestGenerator(reqRate,processTime,reqPerServer);
+        //need to enter validations
+      //  r.setRequestRate(Integer.valueOf(requestRateTextField.getText()));
+      //  r.setProcessingTime(Integer.valueOf(processTimeTextField.getText()));
+      //  r.setReqPerServer(Integer.valueOf(reqPerServerTextField.getText()));
+        
         ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r);
         rightPanel.add("ServerSimulationStart", serverSimulationStart);
         CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
         cardLayout.next(rightPanel);
-      
+
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
@@ -200,10 +281,6 @@ public class MainJFrame extends javax.swing.JFrame {
         CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
         cardLayout.next(rightPanel);
     }//GEN-LAST:event_stopButtonActionPerformed
-
-    private void jLabel1AncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel1AncestorRemoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel1AncestorRemoved
 
     /**
      * @param args the command line arguments
@@ -243,11 +320,17 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel leftPanel;
+    private javax.swing.JTextField processTimeTextField;
+    private javax.swing.JTextField reqPerServerTextField;
+    private javax.swing.JTextField requestRateTextField;
     private javax.swing.JPanel rightPanel;
     private javax.swing.JSplitPane splitPane1;
     private javax.swing.JButton startButton;

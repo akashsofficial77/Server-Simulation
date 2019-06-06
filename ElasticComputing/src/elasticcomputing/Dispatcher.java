@@ -20,9 +20,13 @@ public class Dispatcher {
     ArrayList serverArray;
     ServerFactory serverFactory;
     Queue q;
+    private final int reqPerServer;
+    private final int processingTime;
     
-    Dispatcher(Queue q) {
+    Dispatcher(Queue q, int reqPerServer, int processingTime) {
         this.q=q;
+        this.reqPerServer = reqPerServer;
+        this.processingTime = processingTime;
         initialize();
     }
 
@@ -30,14 +34,13 @@ public class Dispatcher {
         serverFactory = new ServerFactory();
         Server server = serverFactory.generateServer();
         server.setServerName("1ST-SERVER");
+        server.setProcessingTime(processingTime);
         serverArray = serverList.getServerList();
         serverArray.add(server);
         System.out.println("serverArray*******************************");
         System.out.println(serverArray);
         Runnable r = new RunnableImp(q);
-       // Runnable rDel= new RunnableDel();
         Thread t1 = new Thread(r);
-       // Thread t2 =new Thread(rDel);
         t1.start();
          
     }
@@ -71,62 +74,37 @@ public class Dispatcher {
                             Server se=(Server) serverArray.get(j);
                             System.out.println("Server"+j+"has"+se.getQ().size());
                         }
-                      /*  if(s.getQ().isEmpty() && i!=0)
-                        {   
-                            System.out.println("Removing empty server "  + s.getServerName());
-                            serverArray.remove(s);
-                            i--;
-                            continue;
-                        } */
-                         if(s.getQ().size()<=99)
+                         if(s.getQ().size() <= reqPerServer)
                         {
-                           
                             System.out.println("Sending request to server " + s.getServerName() + " with size " +  s.getQ().size() );
                             Request newRequest =(Request)q.poll();
-                            if (newRequest == null){
-                               /* for (Object o : serverArray )
-                                {   
-                                    System.out.println("Completly deleting server");
-                                    Server server=(Server) o;
-                                    if(server.getQ().isEmpty())
-                                    {   
-                                        System.out.println("Removing empty server "  + server.getServerName());
-                                        serverArray.remove(server);
-                                    } 
-                                }*/
+                             if (newRequest == null){
                                 break;
-                            }
+                             }
                             System.out.println("Removing the element from main queue and size is " + q.size());
                             q.notifyAll();
                             System.out.println("Dispatcher thread has notified all");
-                            //int sleepTime = newRequest.getProcessingTime();
-                            //System.out.println(sleepTime);
-                            System.out.println(Thread.currentThread().getName()+":"+s.getQ().add(newRequest));
-                            
-                            s.initialize();
-                            
-                            
+                            System.out.println(Thread.currentThread().getName()+":"+s.getQ().add(newRequest));                           
+                            s.initialize();  
                         }
                         else
                         {
                             i++;
                             if (i == serverArray.size() )
                             {
-                                
                                 Server server = serverFactory.generateServer();
                                 server.setServerName("Server"+i);
-                                
+                                server.setProcessingTime(processingTime);
                                 System.out.println("Server is full so creating new server with " + server.getServerName() + " as server name");
                                 serverArray = serverList.getServerList();
-                                serverArray.add(server);
-                                
+                                serverArray.add(server);   
                             }
-                           
                         }
                         
                     }
-                     for (int x=0;x<serverArray.size();x++ )
+                     for (int x=1;x<serverArray.size();x++ )
                                 {   
+                                    
                                     System.out.println("Completly deleting server");
                                     Server server=(Server) serverArray.get(x);
                                     if(server.getQ().isEmpty())
@@ -134,10 +112,8 @@ public class Dispatcher {
                                         System.out.println("Removing empty server *****************************************" +x+"    " + server.getServerName());
                                         server.setRemove(1);
                                         serverArray.remove(server);
-                                        
                                     } 
                                 }
-
                 } 
                 else 
                 {

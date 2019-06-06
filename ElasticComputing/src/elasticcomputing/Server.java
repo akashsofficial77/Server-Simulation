@@ -6,6 +6,8 @@
 package elasticcomputing;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author tinyteddybear
@@ -14,6 +16,16 @@ public class Server {
     String serverName;
     private Queue q;
     int remove=0;
+    int processingTime;
+
+    public int getProcessingTime() {
+        return processingTime;
+    }
+
+    public void setProcessingTime(int processingTime) {
+        this.processingTime = processingTime;
+    }
+    
 
     public int getRemove() {
         return remove;
@@ -62,11 +74,11 @@ public class Server {
         {
             while(remove ==0)
             {
-                try{
-                TimeUnit.SECONDS.sleep((int)1);
-                } catch(Exception e){
-
-                }
+               try{
+                   TimeUnit.SECONDS.sleep((int)processingTime);
+               } catch(Exception e){
+                   
+               }
                 completed();
             }
 
@@ -79,6 +91,7 @@ public class Server {
                 while(!q.isEmpty())
                 {
                 System.out.println("server is poping request");
+                   
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
                 q.notifyAll();
                 }
