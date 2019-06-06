@@ -30,12 +30,14 @@ public class RandomRequestGenerator {
     int processingTime;
     private Integer reqPerServer;
    // long reqtime = 0;
+    ServerList serverList;
     
     
-    public RandomRequestGenerator(int reqRate , int processingTime, int reqPerServer){  
+    public RandomRequestGenerator(int reqRate , int processingTime, int reqPerServer, ServerList serverList){  
        this.requestRate = reqRate;
        this.processingTime = processingTime;
        this.reqPerServer = reqPerServer;
+       this.serverList = serverList;
        initialize();
 }
 
@@ -63,11 +65,11 @@ public class RandomRequestGenerator {
             try{
           
                System.out.println(Thread.currentThread().getName());
-               try{
-                  // TimeUnit.SECONDS.sleep((long) 1/requestRate);
+              /* try{
+                TimeUnit.SECONDS.sleep((long) 1/requestRate);
                } catch(Exception e){
                    
-               }
+               }*/
                System.out.println("Request generating thread is waiting for " + 1/requestRate + "seconds ");
                generateRandomRequest(q);
                
@@ -98,7 +100,7 @@ public class RandomRequestGenerator {
         try {
             int randInt2 = 0;
             int randInt = 0;
-            q.wait(1);
+            q.wait((long) requestRate,1);
             // while(q.size()==50){
             // System.out.println("Queue is full");
             // }
@@ -131,7 +133,7 @@ public class RandomRequestGenerator {
        mainThread = new Thread(r1); 
        mainThread.setPriority(10);
        mainThread.start();
-       Dispatcher d = new Dispatcher(q,reqPerServer, processingTime);
+       Dispatcher d = new Dispatcher(q,reqPerServer, processingTime, serverList);
     }
     
 }

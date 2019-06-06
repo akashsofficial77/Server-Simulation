@@ -6,8 +6,11 @@
 package elasticcomputing.userInterface;
 
 import elasticcomputing.RandomRequestGenerator;
+import elasticcomputing.Server;
+import elasticcomputing.ServerList;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,14 +20,33 @@ public class ServerSimulationStart extends javax.swing.JPanel {
     
     private final JPanel righPanel;
     private RandomRequestGenerator r;
+    ServerList serverList;
     /**
      * Creates new form AboutUs
      */
-    ServerSimulationStart(JPanel rightPanel, RandomRequestGenerator r) {
+    ServerSimulationStart(JPanel rightPanel, RandomRequestGenerator r, ServerList serverList) {
         initComponents();
         requestGenTextField.setText(Integer.toString(r.getRequestRate()));
         this.righPanel = rightPanel;
         this.r = r;
+        this.serverList = serverList;
+        //populateTable(serverList);
+        
+    }
+    
+        private void populateTable(ServerList serverList){
+        DefaultTableModel model = (DefaultTableModel) serverTable.getModel();
+        
+        model.setRowCount(0);
+        
+         for (int x=0;x< serverList.getServerList().size();x++ ){
+            Server se=(Server) serverList.getServerList().get(x);
+            Object[] row = new Object[3];
+            row[0] = se.getServerName();
+            row[1] = se.getQ().size();
+            row[2] = se.getProcesse();
+            model.addRow(row);
+        }
     }
 
     /**
@@ -41,6 +63,9 @@ public class ServerSimulationStart extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         requestGeneratedLabel = new javax.swing.JLabel();
         requestGenTextField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        serverTable = new javax.swing.JTable();
+        refreshButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -65,24 +90,67 @@ public class ServerSimulationStart extends javax.swing.JPanel {
             }
         });
 
+        serverTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Server Name", "Server Capacity", "Requests Processed"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(serverTable);
+
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(requestGeneratedLabel)
-                .addGap(67, 67, 67)
-                .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(235, 235, 235)
                 .addComponent(jLabel1)
                 .addGap(0, 187, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(refreshButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(requestGeneratedLabel)
+                        .addGap(67, 67, 67)
+                        .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(165, 165, 165)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(267, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +165,14 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(requestGeneratedLabel)))
-                .addContainerGap(436, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 366, Short.MAX_VALUE)
+                .addComponent(refreshButton)
+                .addGap(47, 47, 47))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(174, 174, 174)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(112, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -111,12 +186,20 @@ public class ServerSimulationStart extends javax.swing.JPanel {
            
     }//GEN-LAST:event_requestGenTextFieldActionPerformed
 
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // TODO add your handling code here:
+        populateTable(serverList);
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JTextField requestGenTextField;
     private javax.swing.JLabel requestGeneratedLabel;
+    private javax.swing.JTable serverTable;
     // End of variables declaration//GEN-END:variables
 }

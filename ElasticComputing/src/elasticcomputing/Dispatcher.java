@@ -15,25 +15,27 @@ import java.util.logging.Logger;
 public class Dispatcher {
     
     Request req;
-    ServerList queue;
-    ServerList serverList = new ServerList();
+    //ServerList queue;
+    
     ArrayList serverArray;
     ServerFactory serverFactory;
     Queue q;
     private final int reqPerServer;
     private final int processingTime;
+    private final ServerList serverList;
     
-    Dispatcher(Queue q, int reqPerServer, int processingTime) {
+    Dispatcher(Queue q, int reqPerServer, int processingTime, ServerList serverList) {
         this.q=q;
         this.reqPerServer = reqPerServer;
         this.processingTime = processingTime;
+        this.serverList = serverList;
         initialize();
     }
 
     private void initialize() {
         serverFactory = new ServerFactory();
         Server server = serverFactory.generateServer();
-        server.setServerName("1ST-SERVER");
+        server.setServerName("1ST - SERVER");
         server.setProcessingTime(processingTime);
         serverArray = serverList.getServerList();
         serverArray.add(server);
@@ -45,6 +47,8 @@ public class Dispatcher {
         t1.start();
          
     }
+    
+    
    
     
     class RunnableImp implements Runnable{
@@ -66,14 +70,14 @@ public class Dispatcher {
                     int i =0;
                     while(i<serverArray.size())
                     {   
-                        System.out.println("While i is less than server array size");
+                       // System.out.println("While i is less than server array size");
                         Server s=(Server) serverArray.get(i);
                         System.out.println(Thread.currentThread().getName());
                         System.out.println(Thread.currentThread().getName());
                         for (int j =0;j<serverArray.size();j++)
                         {
                             Server se=(Server) serverArray.get(j);
-                            System.out.println(se.getServerName()+" has "+se.getQ().size());
+                            System.out.println("Sever name is " + se.getServerName()+" has "+se.getQ().size());
                         }
                          if(s.getQ().size() <= reqPerServer)
                         {
