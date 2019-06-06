@@ -115,8 +115,6 @@ public class Dispatcher {
                                     {   
                                         System.out.println("Removing empty server *****************************************" +x+"    " + server.getServerName());
                                         server.setRemove(1);
-                                        server.setlEndTime(System.nanoTime());
-                                        System.out.println(((server.getlEndTime()-server.getlStartTime())/1000000)+"   "+server.getProcesse());
                                         serverArray.remove(server);
                                     } 
                                 }

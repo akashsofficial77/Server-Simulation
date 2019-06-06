@@ -41,10 +41,11 @@ public class ServerSimulationStart extends javax.swing.JPanel {
         
          for (int x=0;x< serverList.getServerList().size();x++ ){
             Server se=(Server) serverList.getServerList().get(x);
-            Object[] row = new Object[3];
+            Object[] row = new Object[4];
             row[0] = se.getServerName();
             row[1] = se.getQ().size();
             row[2] = se.getProcesse();
+            row[3] = se.getRate();
             model.addRow(row);
         }
     }
@@ -66,6 +67,7 @@ public class ServerSimulationStart extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         serverTable = new javax.swing.JTable();
         refreshButton = new javax.swing.JButton();
+        serverCountTextField1 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -92,20 +94,20 @@ public class ServerSimulationStart extends javax.swing.JPanel {
 
         serverTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Server Name", "Server Capacity", "Requests Processed"
+                "Server Name", "Server Capacity", "Requests Processed", "Rate"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -125,6 +127,12 @@ public class ServerSimulationStart extends javax.swing.JPanel {
             }
         });
 
+        serverCountTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serverCountTextField1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -138,13 +146,15 @@ public class ServerSimulationStart extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(refreshButton)
+                    .addComponent(requestGeneratedLabel)
+                    .addComponent(refreshButton))
+                .addGap(67, 67, 67)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(requestGeneratedLabel)
-                        .addGap(67, 67, 67)
                         .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(serverCountTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -165,9 +175,14 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(requestGeneratedLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 366, Short.MAX_VALUE)
-                .addComponent(refreshButton)
-                .addGap(47, 47, 47))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(refreshButton)
+                        .addGap(47, 47, 47))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(serverCountTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(174, 174, 174)
@@ -189,7 +204,13 @@ public class ServerSimulationStart extends javax.swing.JPanel {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here:
         populateTable(serverList);
+        serverCountTextField1.setText(Integer.toString(serverList.getServerList().size()));
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void serverCountTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverCountTextField1ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_serverCountTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -200,6 +221,7 @@ public class ServerSimulationStart extends javax.swing.JPanel {
     private javax.swing.JButton refreshButton;
     private javax.swing.JTextField requestGenTextField;
     private javax.swing.JLabel requestGeneratedLabel;
+    private javax.swing.JTextField serverCountTextField1;
     private javax.swing.JTable serverTable;
     // End of variables declaration//GEN-END:variables
 }
