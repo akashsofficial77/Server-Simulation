@@ -26,7 +26,35 @@ public class Server {
         this.processingTime = processingTime;
     }
     
+    long lStartTime = System.nanoTime();
+    long lEndTime;
+    int processe=0;
+    static int i = 0;
 
+    public long getlStartTime() {
+        return lStartTime;
+    }
+
+    public void setlStartTime(long lStartTime) {
+        this.lStartTime = lStartTime;
+    }
+
+    public int getProcesse() {
+        return processe;
+    }
+
+    public void setProcesse(int processe) {
+        this.processe = processe;
+    }
+
+    public long getlEndTime() {
+        return lEndTime;
+    }
+
+    public void setlEndTime(long lEndTime) {
+        this.lEndTime = lEndTime;
+    }
+    
     public int getRemove() {
         return remove;
     }
@@ -36,8 +64,12 @@ public class Server {
     }
     
     public Server(){
+        
         System.out.println("Server queue is created");
         this.q = new LinkedList<Request>();
+        
+        setServerName("Server"+i);
+        i++;
     }
 
     public String getServerName() {
@@ -93,6 +125,7 @@ public class Server {
                 System.out.println("server is poping request");
                    
                 System.out.println(Thread.currentThread().getName()+":"+q.poll());
+                processe++;
                 q.notifyAll();
                 }
                 

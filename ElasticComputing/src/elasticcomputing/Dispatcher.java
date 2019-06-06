@@ -37,6 +37,7 @@ public class Dispatcher {
         server.setProcessingTime(processingTime);
         serverArray = serverList.getServerList();
         serverArray.add(server);
+        server.initialize();
         System.out.println("serverArray*******************************");
         System.out.println(serverArray);
         Runnable r = new RunnableImp(q);
@@ -72,7 +73,7 @@ public class Dispatcher {
                         for (int j =0;j<serverArray.size();j++)
                         {
                             Server se=(Server) serverArray.get(j);
-                            System.out.println("Server"+j+"has"+se.getQ().size());
+                            System.out.println(se.getServerName()+" has "+se.getQ().size());
                         }
                          if(s.getQ().size() <= reqPerServer)
                         {
@@ -93,7 +94,6 @@ public class Dispatcher {
                             if (i == serverArray.size() )
                             {
                                 Server server = serverFactory.generateServer();
-                                server.setServerName("Server"+i);
                                 server.setProcessingTime(processingTime);
                                 System.out.println("Server is full so creating new server with " + server.getServerName() + " as server name");
                                 serverArray = serverList.getServerList();
@@ -102,15 +102,17 @@ public class Dispatcher {
                         }
                         
                     }
-                     for (int x=1;x<serverArray.size();x++ )
+                     for (int x=0;x<serverArray.size();x++ )
                                 {   
                                     
                                     System.out.println("Completly deleting server");
                                     Server server=(Server) serverArray.get(x);
-                                    if(server.getQ().isEmpty())
+                                    if(server.getQ().isEmpty() && server.getProcesse()!=0)
                                     {   
                                         System.out.println("Removing empty server *****************************************" +x+"    " + server.getServerName());
                                         server.setRemove(1);
+                                        server.setlEndTime(System.nanoTime());
+                                        System.out.println(((server.getlEndTime()-server.getlStartTime())/1000000)+"   "+server.getProcesse());
                                         serverArray.remove(server);
                                     } 
                                 }
