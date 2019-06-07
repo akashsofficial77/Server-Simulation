@@ -82,7 +82,7 @@ public class Dispatcher {
                             Server se=(Server) serverArray.get(j);
                             System.out.println("Sever name is " + se.getServerName()+" has "+se.getQ().size());
                         }
-                         if(s.getQ().size() <= reqPerServer)
+                         if(s.getQ().size() < reqPerServer)
                         {
                             System.out.println("Sending request to server " + s.getServerName() + " with size " +  s.getQ().size() );
                             Request newRequest =(Request)q.poll();
@@ -127,7 +127,7 @@ public class Dispatcher {
                 {
                     try 
                     {
-                        q.wait();
+                        q.wait(10);
                         System.out.println("Dispatcher thread is waiting");
                     } catch (InterruptedException ex) 
                     {

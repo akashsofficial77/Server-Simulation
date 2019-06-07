@@ -156,16 +156,19 @@ public class Server {
                 while(!q.isEmpty())
                 {
                     try{
-                   TimeUnit.MILLISECONDS.sleep((int)processingTime-500);
+                   TimeUnit.MILLISECONDS.sleep((int)processingTime);
                } catch(Exception e){
                    
                }
+                q.wait(processingTime);
              
             
                 System.out.println("server is popping request");
                 Request newRequest =(Request)q.poll();
                 //requestList.add(newRequest);
-                newRequest.setrEndTime(getlEndTime());
+                lEndTime=System.nanoTime();
+                if(newRequest!=null)
+                newRequest.setrEndTime(lEndTime);
                 processe++;
                 
                 setlEndTime(System.nanoTime());
