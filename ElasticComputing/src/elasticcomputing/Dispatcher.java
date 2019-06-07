@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import elasticcomputing.*;
 /**
  *
  * @author tinyteddybear
@@ -23,12 +24,13 @@ public class Dispatcher {
     private final int reqPerServer;
     private final int processingTime;
     private final ServerList serverList;
-    
-    Dispatcher(Queue q, int reqPerServer, int processingTime, ServerList serverList) {
+    private final RequestList requestList;
+    Dispatcher(Queue q, int reqPerServer, int processingTime, ServerList serverList, RequestList requestList) {
         this.q=q;
         this.reqPerServer = reqPerServer;
         this.processingTime = processingTime;
         this.serverList = serverList;
+        this.requestList=requestList;
         initialize();
     }
 
@@ -37,6 +39,7 @@ public class Dispatcher {
         Server server = serverFactory.generateServer();
         server.setServerName("1ST - SERVER");
         server.setProcessingTime(processingTime);
+        server.setRequestList(requestList.getRequestList());
         serverArray = serverList.getServerList();
         serverArray.add(server);
         server.initialize();
@@ -99,6 +102,7 @@ public class Dispatcher {
                             {
                                 Server server = serverFactory.generateServer();
                                 server.setProcessingTime(processingTime);
+                                server.setRequestList(requestList.getRequestList());
                                 System.out.println("Server is full so creating new server with " + server.getServerName() + " as server name");
                                 serverArray = serverList.getServerList();
                                 serverArray.add(server);   

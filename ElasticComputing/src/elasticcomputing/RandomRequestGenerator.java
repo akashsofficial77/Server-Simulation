@@ -31,13 +31,24 @@ public class RandomRequestGenerator {
     private Integer reqPerServer;
    // long reqtime = 0;
     ServerList serverList;
+    RequestList requestList;
+    int stopFlag = 0;
+
+    public int getStopFlag() {
+        return stopFlag;
+    }
+
+    public void setStopFlag(int stopFlag) {
+        this.stopFlag = stopFlag;
+    }
     
-    
-    public RandomRequestGenerator(int reqRate , int processingTime, int reqPerServer, ServerList serverList){  
+    public RandomRequestGenerator(int reqRate , int processingTime, int reqPerServer, ServerList serverList, RequestList requestList){  
        this.requestRate = reqRate;
        this.processingTime = processingTime;
        this.reqPerServer = reqPerServer;
        this.serverList = serverList;
+       this.requestList = requestList;
+       
        initialize();
 }
 
@@ -61,7 +72,7 @@ public class RandomRequestGenerator {
         {    synchronized(q){
             //while(!q.isEmpty())
             
-            while(true){
+            while(stopFlag == 0){
             try{
           
                System.out.println(Thread.currentThread().getName());
@@ -100,7 +111,8 @@ public class RandomRequestGenerator {
         try {
             int randInt2 = 0;
             int randInt = 0;
-            q.wait((long) requestRate,1);
+            TimeUnit.MILLISECONDS.sleep((requestRate));
+            q.wait((long)requestRate);
             // while(q.size()==50){
             // System.out.println("Queue is full");
             // }
@@ -111,6 +123,7 @@ public class RandomRequestGenerator {
             }*/
             Request req1 = requestFactory.generateRequest();
             req1.setName("Request");
+            requestList.getRequestList().add(req1);
             // req1.setProcessingTime(processingTime);
             q.add(req1);
             System.out.println(q.size()+" is the size of main queue ");
@@ -133,7 +146,7 @@ public class RandomRequestGenerator {
        mainThread = new Thread(r1); 
        mainThread.setPriority(10);
        mainThread.start();
-       Dispatcher d = new Dispatcher(q,reqPerServer, processingTime, serverList);
+       Dispatcher d = new Dispatcher(q,reqPerServer, processingTime, serverList,requestList);
     }
     
 }

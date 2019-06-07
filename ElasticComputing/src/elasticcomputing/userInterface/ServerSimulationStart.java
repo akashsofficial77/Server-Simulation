@@ -6,8 +6,10 @@
 package elasticcomputing.userInterface;
 
 import elasticcomputing.RandomRequestGenerator;
+import elasticcomputing.Request;
 import elasticcomputing.Server;
 import elasticcomputing.ServerList;
+import elasticcomputing.RequestList;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -18,19 +20,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ServerSimulationStart extends javax.swing.JPanel {
     
-    private final JPanel righPanel;
+    private final JPanel rightPanel;
     private RandomRequestGenerator r;
     ServerList serverList;
+    RequestList requestList;
+             int pendingCount;
+         int processedCount;
     /**
      * Creates new form AboutUs
      */
-    ServerSimulationStart(JPanel rightPanel, RandomRequestGenerator r, ServerList serverList) {
+    ServerSimulationStart(JPanel rightPanel, RandomRequestGenerator r, ServerList serverList, RequestList requestList) {
         initComponents();
-        requestGenTextField.setText(Integer.toString(r.getRequestRate()));
-        this.righPanel = rightPanel;
+       // requestGenTextField.setText(Integer.toString(r.getRequestRate()));
+        this.rightPanel = rightPanel;
         this.r = r;
         this.serverList = serverList;
-        //populateTable(serverList);
+        this.requestList=requestList;
+        populateTable(serverList);
+        populateRTable(requestList);
         
     }
     
@@ -47,7 +54,45 @@ public class ServerSimulationStart extends javax.swing.JPanel {
             row[2] = se.getProcesse();
             row[3] = se.getRate();
             model.addRow(row);
+            
+            serverCountTextField2.setText(Integer.toString(serverList.getServerList().size()));
         }
+    }
+        
+        private void populateRTable(RequestList requestList){
+        DefaultTableModel model = (DefaultTableModel) requestTable.getModel();
+        
+        model.setRowCount(0);
+
+         for (int x=0;x< requestList.getRequestList().size();x++ ){
+            Request re=(Request) requestList.getRequestList().get(x);
+            int resTime = (int) ((re.getrEndTime()-re.getrStartTime())/1000000);
+            Object[] row = new Object[4];
+            if (resTime < 0){
+               row[1] = "Still in Process"; 
+            } else {
+                
+                row[1] = Integer.toString(resTime);
+            }
+
+            System.out.print("Processed Count---"+processedCount);
+            row[0] = re.getName();      
+            
+           
+            model.addRow(row);
+            
+        }
+         pendingCount=0;
+         processedCount=0;
+         for (int x=0;x< requestList.getRequestList().size();x++ )
+           {
+               if ((requestList.getRequestList().get(x).getrEndTime()-requestList.getRequestList().get(x).getrStartTime())<0)
+                   pendingCount++;
+               else
+                   processedCount++;
+           }
+         T1.setText(Integer.toString(pendingCount));
+            T2.setText(Integer.toString(processedCount));
     }
 
     /**
@@ -59,36 +104,58 @@ public class ServerSimulationStart extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSeparator1 = new javax.swing.JSeparator();
-        backBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         requestGeneratedLabel = new javax.swing.JLabel();
-        requestGenTextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        serverTable = new javax.swing.JTable();
+        requestTable = new javax.swing.JTable();
         refreshButton = new javax.swing.JButton();
-        serverCountTextField1 = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        serverTable = new javax.swing.JTable();
+        serverCountTextField2 = new javax.swing.JTextField();
+        requestGeneratedLabel1 = new javax.swing.JLabel();
+        requestGeneratedLabel2 = new javax.swing.JLabel();
+        T1 = new javax.swing.JTextField();
+        T2 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
-
-        backBtn.setBackground(new java.awt.Color(153, 204, 255));
-        backBtn.setFont(new java.awt.Font("Century Schoolbook", 1, 18)); // NOI18N
-        backBtn.setText("<< Back");
-        backBtn.setToolTipText("Go back");
-        backBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backBtnActionPerformed(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Server Simulation Started!");
 
-        requestGeneratedLabel.setText("Request Generation Rate:");
+        requestGeneratedLabel.setText("Total No of Servers");
 
-        requestGenTextField.addActionListener(new java.awt.event.ActionListener() {
+        requestTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Request Name", "Request Response Time"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(requestTable);
+
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                requestGenTextFieldActionPerformed(evt);
+                refreshButtonActionPerformed(evt);
             }
         });
 
@@ -100,7 +167,7 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Server Name", "Server Capacity", "Requests Processed", "Rate"
+                "Server Name", "Server Queue", "Requests Processed", "Server Request Rate"
             }
         ) {
             Class[] types = new Class [] {
@@ -118,18 +185,27 @@ public class ServerSimulationStart extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(serverTable);
+        jScrollPane2.setViewportView(serverTable);
 
-        refreshButton.setText("Refresh");
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+        serverCountTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
+                serverCountTextField2ActionPerformed(evt);
             }
         });
 
-        serverCountTextField1.addActionListener(new java.awt.event.ActionListener() {
+        requestGeneratedLabel1.setText("Requests processed:");
+
+        requestGeneratedLabel2.setText("Requests pending:");
+
+        T1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serverCountTextField1ActionPerformed(evt);
+                T1ActionPerformed(evt);
+            }
+        });
+
+        T2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                T2ActionPerformed(evt);
             }
         });
 
@@ -138,90 +214,87 @@ public class ServerSimulationStart extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(235, 235, 235)
+                .addGap(374, 374, 374)
                 .addComponent(jLabel1)
                 .addGap(0, 187, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(requestGeneratedLabel)
-                    .addComponent(refreshButton))
-                .addGap(67, 67, 67)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(refreshButton)
+                        .addGap(35, 35, 35)
+                        .addComponent(requestGeneratedLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(serverCountTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(requestGeneratedLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(serverCountTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(T2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(requestGeneratedLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(T1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(165, 165, 165)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(267, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                .addGap(106, 106, 106)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(57, 57, 57)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(requestGenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(requestGeneratedLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(refreshButton)
-                        .addGap(47, 47, 47))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(serverCountTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75))))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(174, 174, 174)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(112, Short.MAX_VALUE)))
+                    .addComponent(refreshButton)
+                    .addComponent(requestGeneratedLabel)
+                    .addComponent(requestGeneratedLabel1)
+                    .addComponent(serverCountTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(requestGeneratedLabel2)
+                    .addComponent(T1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(T2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
-       righPanel.remove(this);
-       CardLayout cardLayout = (CardLayout) righPanel.getLayout();
-       cardLayout.previous(righPanel);
-    }//GEN-LAST:event_backBtnActionPerformed
-
-    private void requestGenTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_requestGenTextFieldActionPerformed
-           
-    }//GEN-LAST:event_requestGenTextFieldActionPerformed
-
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         // TODO add your handling code here:
+        populateRTable(requestList);
         populateTable(serverList);
-        serverCountTextField1.setText(Integer.toString(serverList.getServerList().size()));
+        
+        //.setText(Integer.toString(serverList.getServerList().size()));
     }//GEN-LAST:event_refreshButtonActionPerformed
 
-    private void serverCountTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverCountTextField1ActionPerformed
+    private void serverCountTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverCountTextField2ActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_serverCountTextField1ActionPerformed
+    }//GEN-LAST:event_serverCountTextField2ActionPerformed
+
+    private void T1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_T1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_T1ActionPerformed
+
+    private void T2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_T2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_T2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backBtn;
+    private javax.swing.JTextField T1;
+    private javax.swing.JTextField T2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton refreshButton;
-    private javax.swing.JTextField requestGenTextField;
     private javax.swing.JLabel requestGeneratedLabel;
-    private javax.swing.JTextField serverCountTextField1;
+    private javax.swing.JLabel requestGeneratedLabel1;
+    private javax.swing.JLabel requestGeneratedLabel2;
+    private javax.swing.JTable requestTable;
+    private javax.swing.JTextField serverCountTextField2;
     private javax.swing.JTable serverTable;
     // End of variables declaration//GEN-END:variables
 }
