@@ -8,6 +8,7 @@ package elasticcomputing.userInterface;
 
 import elasticcomputing.RandomRequestGenerator;
 import elasticcomputing.ServerList;
+import elasticcomputing.RequestList;
 import java.awt.CardLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,7 +24,7 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
    // private final Ecosystem system;
-  
+    RandomRequestGenerator r ;
 
     public MainJFrame() {
         initComponents();
@@ -263,13 +264,14 @@ public class MainJFrame extends javax.swing.JFrame {
         int processTime = Integer.valueOf(processTimeTextField.getText());
         int reqPerServer = Integer.valueOf(reqPerServerTextField.getText());
         ServerList serverList = new ServerList();
-        RandomRequestGenerator r = new RandomRequestGenerator(reqRate,processTime,reqPerServer, serverList);
+        RequestList requestList = new RequestList();
+        r = new RandomRequestGenerator(reqRate,processTime,reqPerServer, serverList, requestList);
         //need to enter validations
       //  r.setRequestRate(Integer.valueOf(requestRateTextField.getText()));
       //  r.setProcessingTime(Integer.valueOf(processTimeTextField.getText()));
       //  r.setReqPerServer(Integer.valueOf(reqPerServerTextField.getText()));
         
-        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r, serverList);
+        ServerSimulationStart serverSimulationStart = new ServerSimulationStart(rightPanel, r, serverList, requestList);
         rightPanel.add("ServerSimulationStart", serverSimulationStart);
         CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
         cardLayout.next(rightPanel);
@@ -277,11 +279,8 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_startButtonActionPerformed
 
     private void stopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopButtonActionPerformed
-        // TODO add your handling code here:
-        ServerSimulationEnd serverSimulationEnd = new ServerSimulationEnd(rightPanel);
-        rightPanel.add("ServerSimulationEnd", serverSimulationEnd);
-        CardLayout cardLayout = (CardLayout) rightPanel.getLayout();
-        cardLayout.next(rightPanel);
+        r.setStopFlag(1);
+       
     }//GEN-LAST:event_stopButtonActionPerformed
 
     /**

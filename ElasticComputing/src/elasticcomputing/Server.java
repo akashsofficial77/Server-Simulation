@@ -18,7 +18,15 @@ public class Server {
     int remove=0;
     int processingTime;
     double rate ;
+    ArrayList<Request> requestList;
 
+    public ArrayList<Request> getRequestList() {
+        return requestList;
+    }
+
+    public void setRequestList(ArrayList<Request> requestList) {
+        this.requestList = requestList;
+    }
     public double getRate() {
         return rate;
     }
@@ -75,12 +83,12 @@ public class Server {
     }
     
     public Server(){
-        
         System.out.println("Server queue is created");
         this.q = new LinkedList<Request>();
         
         setServerName("Server" + i);
         i++;
+       
     }
 
     public String getServerName() {
@@ -99,11 +107,20 @@ public class Server {
         this.q = q;
     }
     */
-    
-    public Server(Queue q)
+   /* public Server(ArrayList<Request> requestList)
+            
+    {
+        this.requestList=requestList;
+        System.out.println("Server queue is created");
+        this.q = new LinkedList<Request>();
+        
+        setServerName("Server" + i);
+        i++;
+    }*/
+    /*public Server(Queue q)
     {
         this.q=q;
-    }
+    }*/
     
     class RunnableImp implements Runnable{
         Queue q;
@@ -134,7 +151,8 @@ public class Server {
         
         public void completed() throws InterruptedException
         {
-            
+              synchronized (q)
+            {
                 while(!q.isEmpty())
                 {
                     try{
@@ -142,12 +160,12 @@ public class Server {
                } catch(Exception e){
                    
                }
-               synchronized (q)
-            {
+             
             
                 System.out.println("server is popping request");
-                   
-                System.out.println(Thread.currentThread().getName()+":"+q.poll());
+                Request newRequest =(Request)q.poll();
+                //requestList.add(newRequest);
+                newRequest.setrEndTime(getlEndTime());
                 processe++;
                 
                 setlEndTime(System.nanoTime());
